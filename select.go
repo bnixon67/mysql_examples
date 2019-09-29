@@ -27,11 +27,9 @@ func main() {
 	database, _ := getEnvOrMessage("SQL_DB")
 
 	// exit if no user, password, or database
-	/*
-		if (user == "") || (password == "") || (database == "") {
-			return
-		}
-	*/
+	if (user == "") || (password == "") || (database == "") {
+		return
+	}
 
 	config := mysql.NewConfig()
 	config.User = user

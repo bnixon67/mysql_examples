@@ -8,34 +8,38 @@ import (
 	"os"
 )
 
+// getEnvOrMessage retrieves the value of the environment variable,
+// if present, named by the key, returning the value and true. If the
+// key is not present, a message is printed and the returned value
+// will be empty and the boolean will be false.
+func getEnvOrMessage(key string) (result string, ok bool) {
+	result, ok = os.LookupEnv(key)
+	if !ok {
+		fmt.Printf("Environment variable %s is not set.\n", key)
+	}
+	return
+}
+
 func main() {
-	// get environment variables for MySql user and password
-	user := os.Getenv("SQL_USER")
-	password := os.Getenv("SQL_PASSWORD")
+	// get environment variables or print message if not set
+	user, _ := getEnvOrMessage("SQL_USER")
+	password, _ := getEnvOrMessage("SQL_PASSWORD")
 
-	// no user
-	if user == "" {
-		fmt.Println("Set SQL_USER environment variable")
-	}
-
-	// no password
-	if password == "" {
-		fmt.Println("Set SQL_PASSWORD environment variable")
-	}
-
-	// exit if no user and password
+	// exit if no user, or password
 	if (user == "") || (password == "") {
 		return
 	}
 
+	// create and populate config structure for DSN to login
 	config := mysql.NewConfig()
 	config.User = user
 	config.Passwd = password
 
+	// create dsn from config structure
 	dsn := config.FormatDSN()
 	fmt.Println(dsn)
 
-	// Create the database handle, confirm driver is present
+	// Create the database handle
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal(err)
@@ -54,5 +58,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	fmt.Println("Connected to:", version)
 }
