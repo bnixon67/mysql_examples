@@ -3,9 +3,10 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/go-sql-driver/mysql"
 	"log"
 	"os"
+
+	"github.com/go-sql-driver/mysql"
 )
 
 // getEnvOrMessage retrieves the value of the environment variable,
