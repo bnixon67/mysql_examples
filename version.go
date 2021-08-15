@@ -3,9 +3,10 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/go-sql-driver/mysql"
 	"log"
 	"os"
+
+	"github.com/go-sql-driver/mysql"
 )
 
 // getEnvOrMessage retrieves the value of the environment variable,
@@ -37,7 +38,7 @@ func main() {
 
 	// create dsn from config structure
 	dsn := config.FormatDSN()
-	fmt.Println(dsn)
+	fmt.Println("DSN:", dsn)
 
 	// Create the database handle
 	db, err := sql.Open("mysql", dsn)
@@ -59,5 +60,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Connected to:", version)
+	fmt.Println("Version:", version)
 }
